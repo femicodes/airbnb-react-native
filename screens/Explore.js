@@ -6,24 +6,28 @@ import {
 import Icon from 'react-native-vector-icons/Ionicons';
 import Category from './components/Explore/Category';
 import Tag from './components/Explore/Tag';
+import Homes from './components/Explore/Homes';
 
 let startHeaderHeight = 110;
 let endHeaderHeight = 50;
 const { height, width } = Dimensions.get('window');
-const scrollY = new Animated.Value(0);
+/* this.scrollY = new Animated.Value(0);
 
-if (Platform.OS === 'android') {
-  startHeaderHeight = 100 + StatusBar.currentHeight;
-  endHeaderHeight = 50 + StatusBar.currentHeight;
-}
-
-const animatedHeaderHeight = scrollY.interpolate({
+this.animatedHeaderHeight = scrollY.interpolate({
   inputRange: [0, 50],
   outputRange: [startHeaderHeight, endHeaderHeight],
   extrapolate: 'clamp'
-});
+}); */
 
 const Explore = () => {
+
+  useEffect(() => {
+    if (Platform.OS === 'android') {
+      startHeaderHeight = 100 + StatusBar.currentHeight;
+      endHeaderHeight = 50 + StatusBar.currentHeight;
+    }
+  }, [Platform.OS]);
+
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.mainContainer}>
@@ -44,11 +48,11 @@ const Explore = () => {
         </Animated.View>
         <ScrollView
           scrollEventThrottle={16}
-          onScroll={Animated.event(
-            [
-              { nativeEvent: { contentOffset: { y: scrollY } } }
-            ]
-          )}
+        /* onScroll={Animated.event(
+          [
+            { nativeEvent: { contentOffset: { y: this.scrollY } } }
+          ]
+        )} */
         >
           <View style={styles.finderContainer}>
             <Text style={styles.finder}>
@@ -73,6 +77,14 @@ const Explore = () => {
                   source={require('../assets/home.jpg')}
                 />
               </View>
+            </View>
+          </View>
+          <View style={styles.homes}>
+            <Text style={styles.homesTitle}>Homes around the world</Text>
+            <View style={styles.homesMainview}>
+              <Homes name='The Cozy Place' type='PRIVATE ROOM - 2 BEDS' rating={4} />
+              <Homes name='The Cozy Place' type='PRIVATE ROOM - 2 BEDS' rating={4} />
+              <Homes name='The Cozy Place' type='PRIVATE ROOM - 2 BEDS' rating={4} />
             </View>
           </View>
         </ScrollView>
@@ -101,7 +113,7 @@ const styles = StyleSheet.create({
     elevation: 1,
   },
   header: {
-    height: animatedHeaderHeight,
+    height: startHeaderHeight,
     backgroundColor: '#fff',
     borderBottomWidth: 1,
     borderBottomColor: '#dddddd'
@@ -159,6 +171,21 @@ const styles = StyleSheet.create({
     marginHorizontal: 20,
     position: 'relative',
     top: 10
+  },
+  homes: {
+    marginTop: 40,
+  },
+  homesTitle: {
+    fontSize: 24,
+    fontWeight: '700',
+    paddingHorizontal: 20
+  },
+  homesMainview: {
+    paddingHorizontal: 20,
+    marginTop: 20,
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    justifyContent: 'space-between'
   },
 });
 
